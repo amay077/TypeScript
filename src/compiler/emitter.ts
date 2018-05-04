@@ -87,7 +87,7 @@ namespace ts {
 
     /*@internal*/
     // targetSourceFile is when users only want one file in entire project to be emitted. This is used in compileOnSave feature
-    export function emitFiles(resolver: EmitResolver, host: EmitHost, targetSourceFile: SourceFile, emitOnlyDtsFiles?: boolean, transformers?: TransformerFactory<SourceFile>[]): EmitResult {
+    export function emitFiles(resolver: EmitResolver, host: EmitHost, targetSourceFile: SourceFile, emitOnlyDtsFiles?: boolean, transformers?: ReadonlyArray<TransformerFactory<SourceFile>>): EmitResult {
         const compilerOptions = host.getCompilerOptions();
         const sourceMapDataList: SourceMapData[] = (compilerOptions.sourceMap || compilerOptions.inlineSourceMap || getAreDeclarationMapsEnabled(compilerOptions)) ? [] : undefined;
         const emittedFilesList: string[] = compilerOptions.listEmittedFiles ? [] : undefined;
@@ -2499,7 +2499,7 @@ namespace ts {
         }
 
         function emitSyntheticTripleSlashReferencesIfNeeded(node: Bundle) {
-            emitTripleSlashDirectives(node.hasNoDefaultLib, node.syntheticFileReferences || [], node.syntheticTypeReferences || []);
+            emitTripleSlashDirectives(node.hasNoDefaultLib, node.syntheticFileReferences || emptyArray, node.syntheticTypeReferences || emptyArray);
         }
 
         function emitTripleSlashDirectivesIfNeeded(node: SourceFile) {

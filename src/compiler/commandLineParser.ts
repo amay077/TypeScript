@@ -1349,7 +1349,7 @@ namespace ts {
                 case "string":
                     return option.isFilePath ? "./" : "";
                 case "list":
-                    return [];
+                    return emptyArray;
                 case "object":
                     return {};
                 default:
@@ -1491,7 +1491,7 @@ namespace ts {
         existingOptions: CompilerOptions = {},
         configFileName?: string,
         resolutionStack: Path[] = [],
-        extraFileExtensions: ReadonlyArray<FileExtensionInfo> = [],
+        extraFileExtensions: ReadonlyArray<FileExtensionInfo> = emptyArray,
     ): ParsedCommandLine {
         Debug.assert((json === undefined && sourceFile !== undefined) || (json !== undefined && sourceFile === undefined));
         const errors: Diagnostic[] = [];
@@ -2062,7 +2062,7 @@ namespace ts {
      * @param extraFileExtensions optionaly file extra file extension information from host
      */
     /* @internal */
-    export function getFileNamesFromConfigSpecs(spec: ConfigFileSpecs, basePath: string, options: CompilerOptions, host: ParseConfigHost, extraFileExtensions: ReadonlyArray<FileExtensionInfo> = []): ExpandResult {
+    export function getFileNamesFromConfigSpecs(spec: ConfigFileSpecs, basePath: string, options: CompilerOptions, host: ParseConfigHost, extraFileExtensions: ReadonlyArray<FileExtensionInfo> = emptyArray): ExpandResult {
         basePath = normalizePath(basePath);
 
         const keyMapper = host.useCaseSensitiveFileNames ? identity : toLowerCase;

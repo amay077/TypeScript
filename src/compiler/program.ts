@@ -1143,7 +1143,7 @@ namespace ts {
         }
 
         function emitWorker(program: Program, sourceFile: SourceFile, writeFileCallback: WriteFileCallback, cancellationToken: CancellationToken, emitOnlyDtsFiles?: boolean, customTransformers?: CustomTransformers): EmitResult {
-            let declarationDiagnostics: ReadonlyArray<Diagnostic> = [];
+            let declarationDiagnostics: ReadonlyArray<Diagnostic> = emptyArray;
 
             if (!emitOnlyDtsFiles) {
                 if (options.noEmit) {
@@ -1188,7 +1188,7 @@ namespace ts {
 
             performance.mark("beforeEmit");
 
-            const transformers = emitOnlyDtsFiles ? [] : getTransformers(options, customTransformers);
+            const transformers = emitOnlyDtsFiles ? emptyArray : getTransformers(options, customTransformers);
             const emitResult = emitFiles(
                 emitResolver,
                 getEmitHost(writeFileCallback),

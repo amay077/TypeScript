@@ -833,15 +833,14 @@ namespace ts.server {
             return this.getProjectInfoWorker(args.file, args.projectFileName, args.needFileNameList, /*excludeConfigFiles*/ false);
         }
 
-        private getProjectInfoWorker(uncheckedFileName: string, projectFileName: string, needFileNameList: boolean, excludeConfigFiles: boolean) {
+        private getProjectInfoWorker(uncheckedFileName: string, projectFileName: string, needFileNameList: boolean, excludeConfigFiles: boolean): protocol.ProjectInfo & { fileNames: NormalizedPath[] } {
             const { project } = this.getFileAndProjectWorker(uncheckedFileName, projectFileName);
             project.updateGraph();
-            const projectInfo = {
+            return {
                 configFileName: project.getProjectName(),
                 languageServiceDisabled: !project.languageServiceEnabled,
                 fileNames: needFileNameList ? project.getFileNames(/*excludeFilesFromExternalLibraries*/ false, excludeConfigFiles) : undefined
             };
-            return projectInfo;
         }
 
         private getRenameInfo(args: protocol.FileLocationRequestArgs) {
@@ -1781,7 +1780,7 @@ namespace ts.server {
             }
 
             // No need to analyze lib.d.ts
-            const fileNamesInProject = fileNames.filter(value => !stringContains(value, "lib.d.ts"));
+            const fileNamesInProject = filter<NormalizedPath>(fileNames, value => !stringContains(value, "lib.d.ts"));
             if (fileNamesInProject.length === 0) {
                 return;
             }
